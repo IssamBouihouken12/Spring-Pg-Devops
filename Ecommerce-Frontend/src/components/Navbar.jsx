@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Home from "./Home"
 import axios from "axios";
+import {Link} from "react-router-dom";
 // import { json } from "react-router-dom";
 // import { BiSunFill, BiMoon } from "react-icons/bi";
 
@@ -105,11 +106,11 @@ const Navbar = ({ onSelectCategory, onSearch }) => {
   return (
     <>
       <header>
-        <nav className="navbar navbar-expand-lg fixed-top">
+        <nav className="navbar navbar-expand-lg fixed-top ">
           <div className="container-fluid">
-            <a className="navbar-brand" href="https://www.linkedin.com/in/harish-kumar-gatti-663066249/">
+            <Link className="navbar-brand" to="/home">
               HiTeckKart
-            </a>
+            </Link>
             <button
               className="navbar-toggler"
               type="button"
@@ -127,14 +128,14 @@ const Navbar = ({ onSelectCategory, onSearch }) => {
             >
               <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                 <li className="nav-item">
-                  <a className="nav-link active" aria-current="page" href="/">
+                  <Link className="nav-link active" aria-current="page" to="/home">
                     Home
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="/add_product">
+                  <Link className="nav-link" to="/add_product">
                     Add Product
-                  </a>
+                  </Link>
                 </li>
 
                 <li className="nav-item dropdown">

@@ -27,7 +27,7 @@ public class ProductController {
     }
 
     @GetMapping("/product/{id}")
-    public ResponseEntity<Product> getProduct(@PathVariable int id){
+    public ResponseEntity<Product> getProduct(@PathVariable Long id){
 
         Product product = service.getProductById(id);
 
@@ -38,20 +38,22 @@ public class ProductController {
     }
 
     @PostMapping("/product")
-    public ResponseEntity<?> addProduct(@RequestPart Product product, @RequestPart MultipartFile imageFile) {
-
+    public ResponseEntity<?> addProduct(
+            @RequestPart("product") Product product,
+            @RequestPart("imageFile") MultipartFile imageFile
+    ) {
         try {
             System.out.println(product);
             Product product1 = service.addProduct(product, imageFile);
             return new ResponseEntity<>(product1, HttpStatus.CREATED);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
+
     @GetMapping("product/{productId}/image")
-    public ResponseEntity<byte[]> getImageByProductId(@PathVariable int productId){
+    public ResponseEntity<byte[]> getImageByProductId(@PathVariable Long productId){
 
         Product product = service.getProductById(productId);
         byte[] imageFile = product.getImageDate();
@@ -62,7 +64,7 @@ public class ProductController {
     }
 
     @PutMapping("/product/{id}")
-    public ResponseEntity<String> updateProduct(@PathVariable int id,
+    public ResponseEntity<String> updateProduct(@PathVariable Long id,
                                                 @RequestPart Product product,
                                                 @RequestPart MultipartFile imageFile){
 
@@ -80,7 +82,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/product/{id}")
-    public ResponseEntity<String> deleteProduct(@PathVariable int id){
+    public ResponseEntity<String> deleteProduct(@PathVariable Long id){
         Product product = service.getProductById(id);
         if(product != null) {
             service.deleteProduct(id);

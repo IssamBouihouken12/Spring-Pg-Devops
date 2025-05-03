@@ -30,7 +30,9 @@ public class Product {
     private String imageName;
     private String imageType;
     @Lob
+    @Column(name = "image_date", columnDefinition = "LONGBLOB")
     private byte[] imageDate;
+
 
     public int getId() {
         return id;

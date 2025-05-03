@@ -21,7 +21,7 @@ const AddProduct = () => {
 
   const handleImageChange = (e) => {
     setImage(e.target.files[0]);
-    // setProduct({...product, image: e.target.files[0]})
+    setProduct({...product, image: e.target.files[0]})
   };
 
   const submitHandler = (event) => {
@@ -43,10 +43,13 @@ const AddProduct = () => {
         console.log("Product added successfully:", response.data);
         alert("Product added successfully");
       })
+
       .catch((error) => {
-        console.error("Error adding product:", error);
-        alert("Error adding product");
-      });
+          console.error("Erreur complète :", error.response ? error.response.data : error.message);
+          alert("Erreur: " + (error.response ? error.response.data : error.message));
+        });
+
+
   };
 
   return (
@@ -167,6 +170,7 @@ const AddProduct = () => {
           <input
             className="form-control"
             type="file"
+            name="image"
             onChange={handleImageChange}
           />
         </div>
@@ -189,7 +193,7 @@ const AddProduct = () => {
           <button
             type="submit"
             className="btn btn-primary"
-            // onClick={submitHandler}
+             //onClick={submitHandler}
           >
             Submit
           </button>
