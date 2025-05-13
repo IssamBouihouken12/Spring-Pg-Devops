@@ -1,5 +1,5 @@
 import axios from "../axios";
-import { useState, useEffect, createContext } from "react";
+import { useState, useEffect, createContext, useContext } from "react";
 
 const AppContext = createContext({
   data: [],
@@ -12,11 +12,14 @@ const AppContext = createContext({
   
 });
 
+export const useAppContext = () => useContext(AppContext);
+
 export const AppProvider = ({ children }) => {
   const [data, setData] = useState([]);
   const [isError, setIsError] = useState("");
   const [cart, setCart] = useState(JSON.parse(localStorage.getItem('cart')) || []);
-
+  const [userRole, setUserRole] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const addToCart = (product) => {
     const existingProductIndex = cart.findIndex((item) => item.id === product.id);
@@ -63,9 +66,36 @@ export const AppProvider = ({ children }) => {
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(cart));
   }, [cart]);
-  
+
+  useEffect(() => {
+    const storedRole = localStorage.getItem("userRole");
+    const token = localStorage.getItem("token");
+    if (storedRole && token) {
+      setUserRole(storedRole);
+      setIsAuthenticated(true);
+    }
+  }, []);
+
+  const login = (role, token) => {
+    setUserRole(role);
+    setIsAuthenticated(true);
+    localStorage.setItem("userRole", role);
+    if (token) {
+      localStorage.setItem("token", token);
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    }
+  };
+
+  const logout = () => {
+    setUserRole(null);
+    setIsAuthenticated(false);
+    localStorage.removeItem("userRole");
+    localStorage.removeItem("token");
+    delete axios.defaults.headers.common['Authorization'];
+  };
+
   return (
-    <AppContext.Provider value={{ data, isError, cart, addToCart, removeFromCart,refreshData, clearCart  }}>
+    <AppContext.Provider value={{ data, isError, cart, addToCart, removeFromCart,refreshData, clearCart, userRole, isAuthenticated, login, logout }}>
       {children}
     </AppContext.Provider>
   );

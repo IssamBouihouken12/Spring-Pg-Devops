@@ -29,8 +29,15 @@ const Register = () => {
     };
 
     return (
-        <div style={{ padding: "30px", maxWidth: "400px", margin: "auto" }}>
-            <h2>Inscription</h2>
+        <div style={{
+            padding: "30px",
+            maxWidth: "400px",
+            margin: "100px auto",
+            boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
+            borderRadius: "8px",
+            fontFamily: "Arial, sans-serif"
+        }}>
+            <h2 style={{ textAlign: "center", marginBottom: "20px" }}>Inscription</h2>
             <form onSubmit={handleSubmit}>
                 <input
                     type="text"
@@ -39,7 +46,13 @@ const Register = () => {
                     value={formData.nom}
                     onChange={handleChange}
                     required
-                    style={{ width: "100%", marginBottom: "10px" }}
+                    style={{
+                        width: "100%",
+                        padding: "10px",
+                        marginBottom: "15px",
+                        border: "1px solid #ccc",
+                        borderRadius: "4px"
+                    }}
                 />
                 <input
                     type="password"
@@ -48,7 +61,13 @@ const Register = () => {
                     value={formData.password}
                     onChange={handleChange}
                     required
-                    style={{ width: "100%", marginBottom: "10px" }}
+                    style={{
+                        width: "100%",
+                        padding: "10px",
+                        marginBottom: "15px",
+                        border: "1px solid #ccc",
+                        borderRadius: "4px"
+                    }}
                 />
                 <input
                     type="text"
@@ -57,25 +76,55 @@ const Register = () => {
                     value={formData.region}
                     onChange={handleChange}
                     required
-                    style={{ width: "100%", marginBottom: "10px" }}
+                    style={{
+                        width: "100%",
+                        padding: "10px",
+                        marginBottom: "15px",
+                        border: "1px solid #ccc",
+                        borderRadius: "4px"
+                    }}
                 />
                 <select
                     name="sexe"
                     value={formData.sexe}
                     onChange={handleChange}
                     required
-                    style={{ width: "100%", marginBottom: "10px" }}
+                    style={{
+                        width: "100%",
+                        padding: "10px",
+                        marginBottom: "15px",
+                        border: "1px solid #ccc",
+                        borderRadius: "4px"
+                    }}
                 >
                     <option value="">Sélectionner le sexe</option>
                     <option value="Homme">Homme</option>
                     <option value="Femme">Femme</option>
                 </select>
-                <button type="submit" style={{ width: "100%" }}>
-                    Register
+                <button
+                    type="submit"
+                    style={{
+                        width: "100%",
+                        padding: "10px",
+                        backgroundColor: "#007bff",
+                        color: "white",
+                        border: "none",
+                        borderRadius: "4px",
+                        cursor: "pointer",
+                        fontWeight: "bold"
+                    }}
+                >
+                    S'inscrire
                 </button>
-                <Link to="/login">You have already an account ? Login</Link>
+                <p style={{ marginTop: "15px", textAlign: "center" }}>
+                    Vous avez déjà un compte ?
+                    <Link to="/login" style={{ color: "#007bff", marginLeft: "5px", textDecoration: "none" }}>
+                        Se connecter
+                    </Link>
+                </p>
             </form>
         </div>
+    
     );
 };
 

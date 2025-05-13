@@ -1,7 +1,5 @@
 package com.cart.ecom_proj.controller;
 
-
-
 import com.cart.ecom_proj.dto.JwtResponse;
 import com.cart.ecom_proj.model.Customer;
 import com.cart.ecom_proj.model.LoginRequest;
@@ -23,7 +21,6 @@ public class CustomerController {
     @Autowired
     private JwtUtil jwtUtil;
 
-
     @GetMapping
     public List<Customer> getAllCustomers() {
         return customerService.getAllCustomers();
@@ -32,6 +29,11 @@ public class CustomerController {
     @GetMapping("/{id}")
     public Customer getCustomerById(@PathVariable Integer id) {
         return customerService.getCustomerById(id);
+    }
+
+    @GetMapping("/username/{username}")
+    public Customer getCustomerByUsername(@PathVariable String username) {
+        return customerService.findByName(username);
     }
 
     @PostMapping
@@ -51,8 +53,8 @@ public class CustomerController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Customer loginRequest) {
-        System.out.println("Nom d'utilisateur reçu : " + loginRequest.getNom());  // Log pour vérifier le nom d'utilisateur
-        System.out.println("Mot de passe reçu : " + loginRequest.getPassword());  // Log pour vérifier le mot de passe
+        System.out.println("Nom d'utilisateur reçu : " + loginRequest.getNom());
+        System.out.println("Mot de passe reçu : " + loginRequest.getPassword());
 
         Customer customer = customerService.findByName(loginRequest.getNom());
 
@@ -61,17 +63,14 @@ public class CustomerController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Nom d'utilisateur ou mot de passe incorrect");
         }
 
-        // Vérifie si les mots de passe correspondent
-        System.out.println("Mot de passe stocké : " + customer.getPassword());
         if (!customer.getPassword().equals(loginRequest.getPassword())) {
             System.out.println("Mot de passe incorrect");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Nom d'utilisateur ou mot de passe incorrect");
         }
 
-        String token = jwtUtil.generateToken(customer.getNom()); // Utilisation du nom pour générer le token
+        String token = jwtUtil.generateToken(customer.getNom());
         return ResponseEntity.ok(new JwtResponse(token));
     }
-
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody Customer customer) {
@@ -82,6 +81,4 @@ public class CustomerController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur lors de l'inscription");
         }
     }
-
-
 }

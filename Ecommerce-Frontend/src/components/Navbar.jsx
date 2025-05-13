@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import Home from "./Home"
 import axios from "axios";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import { useAppContext } from "../Context/Context";
 // import { json } from "react-router-dom";
 // import { BiSunFill, BiMoon } from "react-icons/bi";
 
 const Navbar = ({ onSelectCategory, onSearch }) => {
+  const { userRole, logout } = useAppContext();
+  const navigate = useNavigate();
   const getInitialTheme = () => {
     const storedTheme = localStorage.getItem("theme");
     return storedTheme ? storedTheme : "light-theme";
@@ -103,6 +106,13 @@ const Navbar = ({ onSelectCategory, onSearch }) => {
     "Toys",
     "Fashion",
   ];
+
+  const handleLogout = () => {
+    logout();
+    localStorage.clear();
+    navigate("/login", { replace: true });
+  };
+
   return (
     <>
       <header>
@@ -132,11 +142,25 @@ const Navbar = ({ onSelectCategory, onSearch }) => {
                     Home
                   </Link>
                 </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/add_product">
-                    Add Product
-                  </Link>
-                </li>
+                {userRole === 'ADMIN' && (
+                  <>
+                    <li className="nav-item">
+                      <Link className="nav-link" to="/add_product">
+                        Add Product
+                      </Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link className="nav-link" to="/users">
+                        Users
+                      </Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link className="nav-link" to="/dashboard">
+                        Dashboard
+                      </Link>
+                    </li>
+                  </>
+                )}
 
                 <li className="nav-item dropdown">
                   <a
@@ -163,7 +187,11 @@ const Navbar = ({ onSelectCategory, onSearch }) => {
                   </ul>
                 </li>
 
-                <li className="nav-item"></li>
+                <li className="nav-item">
+                  <button className="nav-link" onClick={handleLogout}>
+                    Logout
+                  </button>
+                </li>
               </ul>
               <button className="theme-btn" onClick={() => toggleTheme()}>
                 {theme === "dark-theme" ? (

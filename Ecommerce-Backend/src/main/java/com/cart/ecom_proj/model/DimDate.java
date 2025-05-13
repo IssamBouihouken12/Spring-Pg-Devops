@@ -10,7 +10,8 @@ import lombok.*;
 public class DimDate {
 
     @Id
-    private Integer dateId; // Exemple : 20250419
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer dateId;
 
     private String dateComplete;
 
@@ -20,10 +21,18 @@ public class DimDate {
     private String nomMois;
 
     private Integer trimestre;
+    private Boolean isWeekend;  // true si c'est un week-end
+
 
     private String jourSemaine;
 
+    public Boolean getWeekend() {
+        return isWeekend;
+    }
 
+    public void setWeekend(Boolean weekend) {
+        isWeekend = weekend;
+    }
 
     //getters and setters
     public Integer getAnnee() {

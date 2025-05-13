@@ -8,10 +8,12 @@ import Product from "./components/Product";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { AppProvider } from "./Context/Context";
 import UpdateProduct from "./components/UpdateProduct";
+import Users from "./components/Users";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import Login from "./components/Login.jsx";
 import Register from "./components/Register.jsx";
+
 
 function AppContent() {
   const location = useLocation();
@@ -46,14 +48,14 @@ function AppContent() {
         )}
         <Routes>
           <Route path="/" element={<Navigate to="/login" />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/add_product" element={<AddProduct />} />
-          <Route path="/product" element={<Product />} />
-          <Route path="product/:id" element={<Product />} />
+          <Route path="/home" element={<Home selectedCategory={selectedCategory} />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/add_product" element={<AddProduct />} />
+          <Route path="/product/:id" element={<Product />} />
           <Route path="/product/update/:id" element={<UpdateProduct />} />
+          <Route path="/users" element={<Users />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
         </Routes>
       </>
   );

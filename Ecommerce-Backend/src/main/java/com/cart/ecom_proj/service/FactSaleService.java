@@ -21,21 +21,34 @@ public class FactSaleService {
     private final DimDateRepo dimDateRepository;
 
     public FactSale addFactSale(Long productId, Long customerId, Integer dateId, Integer quantity, Double unitPrice) {
-        Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new RuntimeException("Produit non trouvé"));
-        Customer customer = customerRepository.findById(Math.toIntExact(customerId))
-                .orElseThrow(() -> new RuntimeException("Client non trouvé"));
-        DimDate date = dimDateRepository.findById(dateId)
-                .orElseThrow(() -> new RuntimeException("Date non trouvée"));
+        try {
+            System.out.println("Recherche du produit avec l'ID: " + productId);
+            Product product = productRepository.findById(productId)
+                    .orElseThrow(() -> new RuntimeException("Produit non trouvé avec l'ID: " + productId));
 
-        FactSale sale = new FactSale();
-        sale.setProduct(product);
-        sale.setCustomer(customer);
-        sale.setDate(date);
-        sale.setQuantitySold(quantity);
-        sale.setUnitPrice(unitPrice);
-        sale.setTotalAmount(quantity * unitPrice);
+            System.out.println("Recherche du client avec l'ID: " + customerId);
+            Customer customer = customerRepository.findById(Math.toIntExact(customerId))
+                    .orElseThrow(() -> new RuntimeException("Client non trouvé avec l'ID: " + customerId));
 
-        return factSaleRepository.save(sale);
+            System.out.println("Recherche de la date avec l'ID: " + dateId);
+            DimDate date = dimDateRepository.findById(dateId)
+                    .orElseThrow(() -> new RuntimeException("Date non trouvée avec l'ID: " + dateId));
+
+            System.out.println("Création de la vente");
+            FactSale sale = new FactSale();
+            sale.setProduct(product);
+            sale.setCustomer(customer);
+            sale.setDate(date);
+            sale.setQuantitySold(quantity);
+            sale.setUnitPrice(unitPrice);
+            sale.setTotalAmount(quantity * unitPrice);
+
+            System.out.println("Sauvegarde de la vente");
+            return factSaleRepository.save(sale);
+        } catch (Exception e) {
+            System.err.println("Erreur lors de l'ajout de la vente: " + e.getMessage());
+            e.printStackTrace();
+            throw e;
+        }
     }
 }
