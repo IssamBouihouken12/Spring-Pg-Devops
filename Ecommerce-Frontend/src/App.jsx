@@ -13,6 +13,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import Login from "./components/Login.jsx";
 import Register from "./components/Register.jsx";
+import Dashboard from "./components/Dashboard.jsx";
 
 
 function AppContent() {
@@ -55,6 +56,7 @@ function AppContent() {
           <Route path="/product/update/:id" element={<UpdateProduct />} />
           <Route path="/users" element={<Users />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/register" element={<Register />} />
         </Routes>
       </>

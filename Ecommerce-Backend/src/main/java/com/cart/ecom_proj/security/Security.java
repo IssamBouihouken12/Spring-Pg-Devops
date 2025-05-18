@@ -47,7 +47,8 @@ public class Security {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:5173")); // Autorise React
+        configuration.setAllowedOrigins(List.of("http://localhost:5173" +
+                "")); // Autorise React
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Autorise toutes les méthodes nécessaires
         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type")); // Autorise les headers importants
         configuration.setAllowCredentials(true); // Autorise l'envoi des cookies / tokens
