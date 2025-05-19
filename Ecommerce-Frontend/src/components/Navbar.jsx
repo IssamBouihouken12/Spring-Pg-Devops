@@ -119,7 +119,7 @@ const Navbar = ({ onSelectCategory, onSearch }) => {
         <nav className="navbar navbar-expand-lg fixed-top ">
           <div className="container-fluid">
             <Link className="navbar-brand" to="/home">
-              HiTeckKart
+              Walid_Store
             </Link>
             <button
               className="navbar-toggler"

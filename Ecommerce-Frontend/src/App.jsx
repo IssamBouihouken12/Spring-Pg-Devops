@@ -14,7 +14,7 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import Login from "./components/Login.jsx";
 import Register from "./components/Register.jsx";
 import Dashboard from "./components/Dashboard.jsx";
-
+import Footer from "./components/Footer";
 
 function AppContent() {
   const location = useLocation();
@@ -67,7 +67,14 @@ function App() {
   return (
       <AppProvider>
         <BrowserRouter>
-          <AppContent />
+          <div style={{ 
+            minHeight: '100vh',
+            display: 'flex',
+            flexDirection: 'column'
+          }}>
+            <AppContent />
+            <Footer />
+          </div>
         </BrowserRouter>
       </AppProvider>
   );

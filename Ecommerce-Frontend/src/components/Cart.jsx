@@ -110,7 +110,7 @@ const Cart = () => {
       console.log("Données de vente à envoyer:", salesData);
 
       // Envoyer les données de vente au backend
-      const response = await axios.post("http://localhost:8080/api/sales/confirm-purchase", 
+      const response = await axios.post("http://localhost:8081/api/sales/confirm-purchase",
         salesData,
         {
           headers: {
@@ -137,7 +137,7 @@ const Cart = () => {
         );
   
         await axios
-          .put(`http://localhost:8080/api/product/${item.id}`, cartProduct, {
+          .put(`http://localhost:8081/api/product/${item.id}`, cartProduct, {
             headers: {
               "Content-Type": "multipart/form-data",
             },

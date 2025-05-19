@@ -3,27 +3,24 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import AppContext from "../Context/Context";
 import unplugged from "../assets/unplugged.png";
+import Swal from "sweetalert2";
 
 const Home = ({ selectedCategory }) => {
     const { data, isError, addToCart, refreshData } = useContext(AppContext);
     const [products, setProducts] = useState([]);
     const [isDataFetched, setIsDataFetched] = useState(false);
 
-    // Rafraîchir les données une seule fois
-    useEffect(() => {
-        if (!isDataFetched) {
-            refreshData();
-            setIsDataFetched(true);
-        }
-    }, [refreshData, isDataFetched]);
+    const fetchImagesAndUpdateProducts = async (productsData) => {
+        try {
+            // Nettoyer les anciennes URLs
+            products.forEach(product => {
+                if (product.imageUrl && product.imageUrl !== unplugged) {
+                    URL.revokeObjectURL(product.imageUrl);
+                }
+            });
 
-    // Récupérer les images et les associer aux produits
-    useEffect(() => {
-        const fetchImagesAndUpdateProducts = async () => {
-            if (data && data.length > 0) {
-                try {
                     const updatedProducts = await Promise.all(
-                        data.map(async (product) => {
+                productsData.map(async (product) => {
                             try {
                                 const token = localStorage.getItem("token");
                                 const response = await axios.get(
@@ -54,12 +51,20 @@ const Home = ({ selectedCategory }) => {
                 } catch (error) {
                     console.error("Erreur lors de la récupération des images:", error);
                 }
-            }
         };
 
-        fetchImagesAndUpdateProducts();
+    useEffect(() => {
+        if (!isDataFetched) {
+            refreshData();
+            setIsDataFetched(true);
+        }
+    }, [refreshData, isDataFetched]);
 
-        // Nettoyage des URLs d'objets blob lors du démontage du composant
+    useEffect(() => {
+        if (data && data.length > 0) {
+            fetchImagesAndUpdateProducts(data);
+        }
+
         return () => {
             products.forEach(product => {
                 if (product.imageUrl && product.imageUrl !== unplugged) {
@@ -68,6 +73,25 @@ const Home = ({ selectedCategory }) => {
             });
         };
     }, [data]);
+
+    const handleAddToCart = async (product) => {
+        try {
+            await addToCart(product);
+            await refreshData();
+            await fetchImagesAndUpdateProducts(data);
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "Product added to cart successfly",
+                showConfirmButton: false,
+                timer: 1000,
+                width: '250px'
+            });
+        } catch (error) {
+            console.error("Error adding to cart:", error);
+            alert("Failed to add product to cart");
+        }
+    };
 
     const filteredProducts = selectedCategory
         ? products.filter((product) => product.category === selectedCategory)
@@ -182,8 +206,7 @@ const Home = ({ selectedCategory }) => {
                                         style={{ margin: "10px 25px 0px" }}
                                         onClick={(e) => {
                                             e.preventDefault();
-                                            addToCart(product);
-                                            alert('Product added to cart successfully');
+                                            handleAddToCart(product);
                                         }}
                                         disabled={!productAvailable}
                                     >

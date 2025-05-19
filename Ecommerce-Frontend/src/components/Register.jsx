@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import Swal from "sweetalert2";
 import {Link} from "react-router-dom";
 
 const Register = () => {
@@ -21,7 +22,13 @@ const Register = () => {
         e.preventDefault();
         try {
             await axios.post("http://localhost:8081/api/customers/register", formData);
-            alert("Inscription réussie !");
+            Swal.fire({
+                position: "top",
+                icon: "success",
+                title: "Inscription confirmed",
+                showConfirmButton: false,
+                timer: 1000
+            });
         } catch (error) {
             console.error("Erreur lors de l'inscription", error);
             alert("Erreur lors de l'inscription");

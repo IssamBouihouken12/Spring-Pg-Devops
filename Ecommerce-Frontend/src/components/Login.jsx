@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axiosInstance from "./axiosInstance"; // Import de l'instance personnalisée
 import { useAppContext } from "../Context/Context";
+import Swal from 'sweetalert2';
+
 
 const Login = () => {
     const [credentials, setCredentials] = useState({
@@ -43,7 +45,13 @@ const Login = () => {
                 // Mettre à jour le contexte avec le rôle et le token
                 login(userRole, token);
 
-                alert("Connexion réussie !");
+                Swal.fire({
+                    position: "top",
+                    icon: "success",
+                    title: "Connection successful",
+                    showConfirmButton: false,
+                    timer: 1000
+                });
                 navigate("/home"); // Redirection vers la page d'accueil
             } else {
                 setErrorMessage("Le serveur n'a pas retourné de token.");

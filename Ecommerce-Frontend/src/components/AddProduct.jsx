@@ -43,165 +43,226 @@ const AddProduct = () => {
           console.log("Product added successfully:", response.data);
           alert("Product added successfully");
         })
-
         .catch((error) => {
           console.error("Erreur complète :", error.response ? error.response.data : error.message);
           alert("Erreur: " + (error.response ? error.response.data : error.message));
         });
-
-
   };
 
   return (
-      <div className="container">
-        <div className="center-container">
-          <form className="row g-3 pt-5" onSubmit={submitHandler}>
-            <div className="col-md-6">
-              <label className="form-label">
-                <h6>Name</h6>
-              </label>
-              <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Product Name"
-                  onChange={handleInputChange}
-                  value={product.name}
-                  name="name"
-              />
-            </div>
-            <div className="col-md-6">
-              <label className="form-label">
-                <h6>Brand</h6>
-              </label>
-              <input
-                  type="text"
-                  name="brand"
-                  className="form-control"
-                  placeholder="Enter your Brand"
-                  value={product.brand}
-                  onChange={handleInputChange}
-                  id="brand"
-              />
-            </div>
-            <div className="col-12">
-              <label className="form-label">
-                <h6>Description</h6>
-              </label>
-              <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Add product description"
-                  value={product.description}
-                  name="description"
-                  onChange={handleInputChange}
-                  id="description"
-              />
-            </div>
-            <div className="col-5">
-              <label className="form-label">
-                <h6>Price</h6>
-              </label>
-              <input
-                  type="number"
-                  className="form-control"
-                  placeholder="Eg: $1000"
-                  onChange={handleInputChange}
-                  value={product.price}
-                  name="price"
-                  id="price"
-              />
-            </div>
+    <div style={{
+      padding: '20px',
+      maxWidth: '1200px',
+      margin: '0 auto',
+      marginTop: '80px'
+    }}>
+      <div style={{
+        backgroundColor: 'white',
+        borderRadius: '10px',
+        padding: '2rem',
+        boxShadow: '0 0 20px rgba(0, 0, 0, 0.1)'
+      }}>
+        <h2 style={{
+          marginBottom: '2rem',
+          color: '#333',
+          textAlign: 'center'
+        }}>Add New Product</h2>
 
-            <div className="col-md-6">
-              <label className="form-label">
-                <h6>Category</h6>
-              </label>
-              <select
-                  className="form-select"
-                  value={product.category}
-                  onChange={handleInputChange}
-                  name="category"
-                  id="category"
-              >
-                <option value="">Select category</option>
-                <option value="Laptop">Laptop</option>
-                <option value="Headphone">Headphone</option>
-                <option value="Mobile">Mobile</option>
-                <option value="Electronics">Electronics</option>
-                <option value="Toys">Toys</option>
-                <option value="Fashion">Fashion</option>
-              </select>
-            </div>
+        <form onSubmit={submitHandler} style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+          gap: '1.5rem'
+        }}>
+          <div style={formGroupStyle}>
+            <label style={labelStyle}>Name</label>
+            <input
+              type="text"
+              style={inputStyle}
+              placeholder="Product Name"
+              onChange={handleInputChange}
+              value={product.name}
+              name="name"
+            />
+          </div>
 
-            <div className="col-md-4">
-              <label className="form-label">
-                <h6>Stock Quantity</h6>
-              </label>
-              <input
-                  type="number"
-                  className="form-control"
-                  placeholder="Stock Remaining"
-                  onChange={handleInputChange}
-                  value={product.stockQuantity}
-                  name="stockQuantity"
-                  // value={`${stockAlert}/${stockQuantity}`}
-                  id="stockQuantity"
-              />
-            </div>
-            <div className="col-md-4">
-              <label className="form-label">
-                <h6>Release Date</h6>
-              </label>
-              <input
-                  type="date"
-                  className="form-control"
-                  value={product.releaseDate}
-                  name="releaseDate"
-                  onChange={handleInputChange}
-                  id="releaseDate"
-              />
-            </div>
-            {/* <input className='image-control' type="file" name='file' onChange={(e) => setProduct({...product, image: e.target.files[0]})} />
-    <button className="btn btn-primary" >Add Photo</button>  */}
-            <div className="col-md-4">
-              <label className="form-label">
-                <h6>Image</h6>
-              </label>
-              <input
-                  className="form-control"
-                  type="file"
-                  name="image"
-                  onChange={handleImageChange}
-              />
-            </div>
-            <div className="col-12">
-              <div className="form-check">
-                <input
-                    className="form-check-input"
-                    type="checkbox"
-                    name="productAvailable"
-                    id="gridCheck"
-                    checked={product.productAvailable}
-                    onChange={(e) =>
-                        setProduct({ ...product, productAvailable: e.target.checked })
-                    }
-                />
-                <label className="form-check-label">Product Available</label>
-              </div>
-            </div>
-            <div className="col-12">
-              <button
-                  type="submit"
-                  className="btn btn-primary"
-                  //onClick={submitHandler}
-              >
-                Submit
-              </button>
-            </div>
-          </form>
-        </div>
+          <div style={formGroupStyle}>
+            <label style={labelStyle}>Brand</label>
+            <input
+              type="text"
+              name="brand"
+              style={inputStyle}
+              placeholder="Enter your Brand"
+              value={product.brand}
+              onChange={handleInputChange}
+            />
+          </div>
+
+          <div style={{
+            ...formGroupStyle,
+            gridColumn: '1 / -1'
+          }}>
+            <label style={labelStyle}>Description</label>
+            <textarea
+              style={{
+                ...inputStyle,
+                minHeight: '100px',
+                resize: 'vertical'
+              }}
+              placeholder="Add product description"
+              value={product.description}
+              name="description"
+              onChange={handleInputChange}
+            />
+          </div>
+
+          <div style={formGroupStyle}>
+            <label style={labelStyle}>Price</label>
+            <input
+              type="number"
+              style={inputStyle}
+              placeholder="Eg: $1000"
+              onChange={handleInputChange}
+              value={product.price}
+              name="price"
+            />
+          </div>
+
+          <div style={formGroupStyle}>
+            <label style={labelStyle}>Category</label>
+            <select
+              style={inputStyle}
+              value={product.category}
+              onChange={handleInputChange}
+              name="category"
+            >
+              <option value="">Select category</option>
+              <option value="Laptop">Laptop</option>
+              <option value="Headphone">Headphone</option>
+              <option value="Mobile">Mobile</option>
+              <option value="Electronics">Electronics</option>
+              <option value="Toys">Toys</option>
+              <option value="Fashion">Fashion</option>
+            </select>
+          </div>
+
+          <div style={formGroupStyle}>
+            <label style={labelStyle}>Stock Quantity</label>
+            <input
+              type="number"
+              style={inputStyle}
+              placeholder="Stock Remaining"
+              onChange={handleInputChange}
+              value={product.stockQuantity}
+              name="stockQuantity"
+            />
+          </div>
+
+          <div style={formGroupStyle}>
+            <label style={labelStyle}>Release Date</label>
+            <input
+              type="date"
+              style={inputStyle}
+              value={product.releaseDate}
+              name="releaseDate"
+              onChange={handleInputChange}
+            />
+          </div>
+
+          <div style={formGroupStyle}>
+            <label style={labelStyle}>Image</label>
+            <input
+              style={{
+                ...inputStyle,
+                padding: '0.5rem 0'
+              }}
+              type="file"
+              name="image"
+              onChange={handleImageChange}
+            />
+          </div>
+
+          <div style={{
+            ...formGroupStyle,
+            gridColumn: '1 / -1',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.5rem'
+          }}>
+            <input
+              type="checkbox"
+              name="productAvailable"
+              checked={product.productAvailable}
+              onChange={(e) =>
+                setProduct({ ...product, productAvailable: e.target.checked })
+              }
+              style={{
+                width: '20px',
+                height: '20px'
+              }}
+            />
+            <label style={{
+              ...labelStyle,
+              margin: 0
+            }}>Product Available</label>
+          </div>
+
+          <div style={{
+            gridColumn: '1 / -1',
+            display: 'flex',
+            justifyContent: 'center',
+            marginTop: '1rem'
+          }}>
+            <button
+              type="submit"
+              style={submitButtonStyle}
+            >
+              Add Product
+            </button>
+          </div>
+        </form>
       </div>
+    </div>
   );
+};
+
+// Styles
+const formGroupStyle = {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '0.5rem'
+};
+
+const labelStyle = {
+  color: '#495057',
+  fontWeight: '500',
+  fontSize: '0.9rem'
+};
+
+const inputStyle = {
+  padding: '0.75rem',
+  border: '1px solid #ced4da',
+  borderRadius: '5px',
+  fontSize: '1rem',
+  width: '100%',
+  transition: 'border-color 0.3s ease',
+  ':focus': {
+    borderColor: '#007bff',
+    outline: 'none'
+  }
+};
+
+const submitButtonStyle = {
+  padding: '0.75rem 2rem',
+  backgroundColor: '#007bff',
+  color: 'white',
+  border: 'none',
+  borderRadius: '5px',
+  cursor: 'pointer',
+  fontSize: '1rem',
+  transition: 'background-color 0.3s ease',
+  ':hover': {
+    backgroundColor: '#0056b3'
+  }
 };
 
 export default AddProduct;

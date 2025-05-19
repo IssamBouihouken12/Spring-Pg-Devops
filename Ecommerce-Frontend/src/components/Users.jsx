@@ -42,14 +42,16 @@ const Users = () => {
         if (window.confirm('Are you sure you want to delete this user?')) {
             try {
                 const token = localStorage.getItem('token');
-                await axios.delete(`http://localhost:8080/api/customers/${userId}`, {
+                await axios.delete(`http://localhost:8081/api/customers/${userId}`, {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
                 });
+                alert('User deleted successfully');
                 fetchUsers();
             } catch (error) {
                 console.error('Error deleting user:', error);
+                alert('Error deleting user: ' + (error.response?.data || error.message));
             }
         }
     };
@@ -100,41 +102,71 @@ const Users = () => {
     };
 
     return (
-        <div className="container mt-5">
-            <h2 className="mb-4">User Management</h2>
-            <div className="table-responsive" style={{ maxHeight: '600px', overflowY: 'auto' }}>
-                <table className="table table-striped table-hover">
-                    <thead className="sticky-top bg-white">
+        <div style={{
+            padding: '20px',
+            maxWidth: '1200px',
+            margin: '0 auto',
+            marginTop: '80px'
+        }}>
+            <h2 style={{
+                marginBottom: '2rem',
+                color: '#333',
+                fontSize: '2rem',
+                textAlign: 'center'
+            }}>User Management</h2>
+
+            <div style={{
+                overflowX: 'auto',
+                boxShadow: '0 0 20px rgba(0, 0, 0, 0.1)',
+                borderRadius: '10px',
+                backgroundColor: 'white'
+            }}>
+                <table style={{
+                    width: '100%',
+                    borderCollapse: 'collapse',
+                    minWidth: '600px'
+                }}>
+                    <thead style={{
+                        backgroundColor: '#f8f9fa',
+                        position: 'sticky',
+                        top: 0
+                    }}>
                         <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Region</th>
-                            <th>Gender</th>
-                            <th>Role</th>
-                            <th>Actions</th>
+                            <th style={tableHeaderStyle}>ID</th>
+                            <th style={tableHeaderStyle}>Name</th>
+                            <th style={tableHeaderStyle}>Region</th>
+                            <th style={tableHeaderStyle}>Gender</th>
+                            <th style={tableHeaderStyle}>Role</th>
+                            <th style={tableHeaderStyle}>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         {currentUsers.map((user) => (
-                            <tr key={user.customerId}>
-                                <td>{user.customerId}</td>
-                                <td>{user.nom}</td>
-                                <td>{user.region}</td>
-                                <td>{user.sexe}</td>
-                                <td>{user.role}</td>
-                                <td>
-                                    <button
-                                        className="btn btn-primary btn-sm me-2"
-                                        onClick={() => handleEdit(user)}
-                                    >
-                                        Edit
-                                    </button>
-                                    <button
-                                        className="btn btn-danger btn-sm"
-                                        onClick={() => handleDelete(user.customerId)}
-                                    >
-                                        Delete
-                                    </button>
+                            <tr key={user.customerId} style={tableRowStyle}>
+                                <td style={tableCellStyle}>{user.customerId}</td>
+                                <td style={tableCellStyle}>{user.nom}</td>
+                                <td style={tableCellStyle}>{user.region}</td>
+                                <td style={tableCellStyle}>{user.sexe}</td>
+                                <td style={tableCellStyle}>{user.role}</td>
+                                <td style={tableCellStyle}>
+                                    <div style={{
+                                        display: 'flex',
+                                        gap: '0.5rem',
+                                        flexWrap: 'wrap'
+                                    }}>
+                                        <button
+                                            style={editButtonStyle}
+                                            onClick={() => handleEdit(user)}
+                                        >
+                                            Edit
+                                        </button>
+                                        <button
+                                            style={deleteButtonStyle}
+                                            onClick={() => handleDelete(user.customerId)}
+                                        >
+                                            Delete
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
                         ))}
@@ -142,125 +174,250 @@ const Users = () => {
                 </table>
             </div>
 
-            {/* Pagination */}
-            <div className="d-flex justify-content-center mt-4">
-                <nav>
-                    <ul className="pagination">
-                        <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
-                            <button
-                                className="page-link"
-                                onClick={() => handlePageChange(currentPage - 1)}
-                                disabled={currentPage === 1}
-                            >
-                                Previous
-                            </button>
-                        </li>
-                        {[...Array(totalPages)].map((_, index) => (
-                            <li
-                                key={index + 1}
-                                className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}
-                            >
-                                <button
-                                    className="page-link"
-                                    onClick={() => handlePageChange(index + 1)}
-                                >
-                                    {index + 1}
-                                </button>
-                            </li>
-                        ))}
-                        <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
-                            <button
-                                className="page-link"
-                                onClick={() => handlePageChange(currentPage + 1)}
-                                disabled={currentPage === totalPages}
-                            >
-                                Next
-                            </button>
-                        </li>
-                    </ul>
-                </nav>
+            <div style={{
+                display: 'flex',
+                justifyContent: 'center',
+                marginTop: '2rem',
+                flexWrap: 'wrap',
+                gap: '0.5rem'
+            }}>
+                <button
+                    style={paginationButtonStyle}
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    disabled={currentPage === 1}
+                >
+                    Previous
+                </button>
+                {[...Array(totalPages)].map((_, index) => (
+                    <button
+                        key={index + 1}
+                        style={{
+                            ...paginationButtonStyle,
+                            backgroundColor: currentPage === index + 1 ? '#007bff' : '#fff',
+                            color: currentPage === index + 1 ? '#fff' : '#007bff'
+                        }}
+                        onClick={() => handlePageChange(index + 1)}
+                    >
+                        {index + 1}
+                    </button>
+                ))}
+                <button
+                    style={paginationButtonStyle}
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    disabled={currentPage === totalPages}
+                >
+                    Next
+                </button>
             </div>
 
             {editingUser && (
-                <div className="modal show d-block" tabIndex="-1">
-                    <div className="modal-dialog">
-                        <div className="modal-content">
-                            <div className="modal-header">
-                                <h5 className="modal-title">Edit User</h5>
-                                <button
-                                    type="button"
-                                    className="btn-close"
-                                    onClick={() => setEditingUser(null)}
-                                ></button>
-                            </div>
-                            <div className="modal-body">
-                                <form onSubmit={handleUpdate}>
-                                    <div className="mb-3">
-                                        <label className="form-label">Name</label>
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            name="nom"
-                                            value={formData.nom}
-                                            onChange={handleChange}
-                                        />
-                                    </div>
-                                    <div className="mb-3">
-                                        <label className="form-label">Password</label>
-                                        <input
-                                            type="password"
-                                            className="form-control"
-                                            name="password"
-                                            value={formData.password}
-                                            onChange={handleChange}
-                                        />
-                                    </div>
-                                    <div className="mb-3">
-                                        <label className="form-label">Region</label>
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            name="region"
-                                            value={formData.region}
-                                            onChange={handleChange}
-                                        />
-                                    </div>
-                                    <div className="mb-3">
-                                        <label className="form-label">Gender</label>
-                                        <select
-                                            className="form-control"
-                                            name="sexe"
-                                            value={formData.sexe}
-                                            onChange={handleChange}
-                                        >
-                                            <option value="">Select Gender</option>
-                                            <option value="M">Male</option>
-                                            <option value="F">Female</option>
-                                        </select>
-                                    </div>
-                                    <div className="mb-3">
-                                        <label className="form-label">Role</label>
-                                        <select
-                                            className="form-control"
-                                            name="role"
-                                            value={formData.role}
-                                            onChange={handleChange}
-                                        >
-                                            <option value="CUSTOMER">Customer</option>
-                                            <option value="ADMIN">Admin</option>
-                                        </select>
-                                    </div>
-                                    <button type="submit" className="btn btn-primary">
-                                        Update
-                                    </button>
-                                </form>
-                            </div>
+                <div style={modalOverlayStyle}>
+                    <div style={modalContentStyle}>
+                        <div style={modalHeaderStyle}>
+                            <h5 style={{ margin: 0 }}>Edit User</h5>
+                            <button
+                                style={closeButtonStyle}
+                                onClick={() => setEditingUser(null)}
+                            >
+                                ×
+                            </button>
                         </div>
+                        <form onSubmit={handleUpdate} style={formStyle}>
+                            <div style={formGroupStyle}>
+                                <label style={labelStyle}>Name</label>
+                                <input
+                                    type="text"
+                                    style={inputStyle}
+                                    name="nom"
+                                    value={formData.nom}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                            <div style={formGroupStyle}>
+                                <label style={labelStyle}>Password</label>
+                                <input
+                                    type="password"
+                                    style={inputStyle}
+                                    name="password"
+                                    value={formData.password}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                            <div style={formGroupStyle}>
+                                <label style={labelStyle}>Region</label>
+                                <input
+                                    type="text"
+                                    style={inputStyle}
+                                    name="region"
+                                    value={formData.region}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                            <div style={formGroupStyle}>
+                                <label style={labelStyle}>Gender</label>
+                                <select
+                                    style={inputStyle}
+                                    name="sexe"
+                                    value={formData.sexe}
+                                    onChange={handleChange}
+                                >
+                                    <option value="">Select Gender</option>
+                                    <option value="M">Male</option>
+                                    <option value="F">Female</option>
+                                </select>
+                            </div>
+                            <div style={formGroupStyle}>
+                                <label style={labelStyle}>Role</label>
+                                <select
+                                    style={inputStyle}
+                                    name="role"
+                                    value={formData.role}
+                                    onChange={handleChange}
+                                >
+                                    <option value="CUSTOMER">Customer</option>
+                                    <option value="ADMIN">Admin</option>
+                                </select>
+                            </div>
+                            <button type="submit" style={submitButtonStyle}>
+                                Update
+                            </button>
+                        </form>
                     </div>
                 </div>
             )}
         </div>
     );
+};
+
+// Styles
+const tableHeaderStyle = {
+    padding: '1rem',
+    textAlign: 'left',
+    borderBottom: '2px solid #dee2e6',
+    color: '#495057',
+    fontWeight: 'bold'
+};
+
+const tableRowStyle = {
+    borderBottom: '1px solid #dee2e6',
+    ':hover': {
+        backgroundColor: '#f8f9fa'
+    }
+};
+
+const tableCellStyle = {
+    padding: '1rem',
+    color: '#212529'
+};
+
+const editButtonStyle = {
+    padding: '0.5rem 1rem',
+    backgroundColor: '#007bff',
+    color: 'white',
+    border: 'none',
+    borderRadius: '5px',
+    cursor: 'pointer',
+    fontSize: '0.875rem',
+    transition: 'background-color 0.3s ease'
+};
+
+const deleteButtonStyle = {
+    padding: '0.5rem 1rem',
+    backgroundColor: '#dc3545',
+    color: 'white',
+    border: 'none',
+    borderRadius: '5px',
+    cursor: 'pointer',
+    fontSize: '0.875rem',
+    transition: 'background-color 0.3s ease'
+};
+
+const paginationButtonStyle = {
+    padding: '0.5rem 1rem',
+    border: '1px solid #007bff',
+    backgroundColor: '#fff',
+    color: '#007bff',
+    borderRadius: '5px',
+    cursor: 'pointer',
+    transition: 'all 0.3s ease',
+    ':disabled': {
+        opacity: 0.5,
+        cursor: 'not-allowed'
+    }
+};
+
+const modalOverlayStyle = {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1000
+};
+
+const modalContentStyle = {
+    backgroundColor: 'white',
+    borderRadius: '10px',
+    padding: '2rem',
+    width: '90%',
+    maxWidth: '500px',
+    maxHeight: '90vh',
+    overflowY: 'auto'
+};
+
+const modalHeaderStyle = {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: '1.5rem'
+};
+
+const closeButtonStyle = {
+    background: 'none',
+    border: 'none',
+    fontSize: '1.5rem',
+    cursor: 'pointer',
+    color: '#666'
+};
+
+const formStyle = {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '1rem'
+};
+
+const formGroupStyle = {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '0.5rem'
+};
+
+const labelStyle = {
+    color: '#495057',
+    fontWeight: '500'
+};
+
+const inputStyle = {
+    padding: '0.5rem',
+    border: '1px solid #ced4da',
+    borderRadius: '5px',
+    fontSize: '1rem'
+};
+
+const submitButtonStyle = {
+    padding: '0.75rem 1.5rem',
+    backgroundColor: '#007bff',
+    color: 'white',
+    border: 'none',
+    borderRadius: '5px',
+    cursor: 'pointer',
+    fontSize: '1rem',
+    marginTop: '1rem',
+    transition: 'background-color 0.3s ease'
 };
 
 export default Users; 
