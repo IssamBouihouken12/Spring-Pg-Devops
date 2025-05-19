@@ -23,7 +23,7 @@ const Login = () => {
         e.preventDefault();
         try {
             // Utilisation de l'axiosInstance pour la requête
-            const response = await axiosInstance.post("http://localhost:8080/api/customers/login", credentials, {
+            const response = await axiosInstance.post("http://localhost:8081/api/customers/login", credentials, {
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -37,7 +37,7 @@ const Login = () => {
                 axiosInstance.defaults.headers["Authorization"] = `Bearer ${token}`;
 
                 // Récupérer les informations de l'utilisateur pour obtenir son rôle
-                const userResponse = await axiosInstance.get(`http://localhost:8080/api/customers/username/${credentials.nom}`);
+                const userResponse = await axiosInstance.get(`http://localhost:8081/api/customers/username/${credentials.nom}`);
                 const userRole = userResponse.data.role;
                 
                 // Mettre à jour le contexte avec le rôle et le token

@@ -27,7 +27,7 @@ const Home = ({ selectedCategory }) => {
                             try {
                                 const token = localStorage.getItem("token");
                                 const response = await axios.get(
-                                    `http://localhost:8080/api/product/${product.id}/image`,
+                                    `http://localhost:8081/api/product/${product.id}/image`,
                                     {
                                         responseType: "blob",
                                         headers: {

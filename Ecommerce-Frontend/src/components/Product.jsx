@@ -13,7 +13,7 @@ const Product = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/api/product/${id}`);
+        const response = await axios.get(`http://localhost:8081/api/product/${id}`);
         setProduct(response.data);
         setImageUrl(response.data.imageUrl);
       } catch (error) {
@@ -30,7 +30,7 @@ const Product = () => {
 
   const deleteProduct = async () => {
     try {
-      await axios.delete(`http://localhost:8080/api/product/${id}`);
+      await axios.delete(`http://localhost:8081/api/product/${id}`);
       navigate("/home");
     } catch (error) {
       console.error("Error deleting product:", error);

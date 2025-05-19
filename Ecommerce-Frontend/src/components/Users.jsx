@@ -23,7 +23,7 @@ const Users = () => {
     const fetchUsers = async () => {
         try {
             const token = localStorage.getItem('token');
-            const response = await axios.get('http://localhost:8080/api/customers', {
+            const response = await axios.get('http://localhost:8081/api/customers', {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -69,7 +69,7 @@ const Users = () => {
         e.preventDefault();
         try {
             const token = localStorage.getItem('token');
-            await axios.put(`http://localhost:8080/api/customers/${editingUser.customerId}`, formData, {
+            await axios.put(`http://localhost:8081/api/customers/${editingUser.customerId}`, formData, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }

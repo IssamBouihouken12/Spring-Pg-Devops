@@ -20,7 +20,7 @@ const Register = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post("http://localhost:8080/api/customers/register", formData);
+            await axios.post("http://localhost:8081/api/customers/register", formData);
             alert("Inscription réussie !");
         } catch (error) {
             console.error("Erreur lors de l'inscription", error);
