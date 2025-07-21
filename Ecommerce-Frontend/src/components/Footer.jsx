@@ -37,11 +37,7 @@ const Footer = () => {
                 Cart
               </Link>
             </li>
-            <li style={{ marginBottom: '0.5rem' }}>
-              <Link to="/orders" style={{ color: '#999', textDecoration: 'none', ':hover': { color: '#fff' } }}>
-                Orders
-              </Link>
-            </li>
+
           </ul>
         </div>
 
